@@ -1,0 +1,235 @@
+{% extends "layout.html" %}
+
+{% block title %}Karan Blog — Home{% endblock %}
+
+{% block content %}
+
+  <!-- HERO -->
+   
+  <section class="hero">
+    <div class="container hero-inner hero-inner--split">
+      <div class="hero-text">
+        <p class="hero-eyebrow">~/karan-blog $ whoami</p>
+        <h1 class="hero-title">Learning out loud,<br>one <span class="hero-accent">commit</span> at a time.</h1>
+        <p class="hero-sub">
+          I'm Karan — an IT graduate from Nagpur, currently job-hunting and
+          building things in Python and Flask. This is where I write about
+          what I'm learning, breaking, and figuring out.
+        </p>
+        <div class="hero-actions">
+          <a href="#posts" class="btn-solid btn-compact">Read the latest →</a>
+          <a href="https://github.com/karangobade" target="_blank" class="btn-ghost btn-compact">GitHub</a>
+            <a href="https://www.linkedin.com/in/karan-gobade-89129a371/" target="_blank" class="btn-ghost btn-compact">LinkedIn</a>
+
+        </div>
+      </div>
+      
+      <div class="hero-photo-wrap">
+        <img src="{{ url_for('static', filename='images/profile.png') }}" alt="Karan Gobade" class="hero-photo">
+      </div>
+    </div>
+    <div class="hero-glow"></div>
+  </section>
+
+  <!-- STATS STRIP -->
+  <section class="stats-strip">
+    <div class="container stats-grid">
+      <div class="stat-box">
+        <span class="stat-number" data-count="5">0</span>
+        <span class="stat-label">Projects shipped</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-number" data-count="{{ posts|length if posts else 4 }}">0</span>
+        <span class="stat-label">Posts written</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-number" data-count="2">0</span>
+        <span class="stat-label">Hiring assignments done</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-number" data-count="10">0</span>
+        <span class="stat-label">Certifications earned</span>
+      </div>
+    </div>
+  </section>
+
+ <!-- TECH STACK -->
+  <section class="stack-section">
+    <div class="container">
+      <p class="section-tag">// stack</p>
+      <h2 class="stack-heading">Things I build with</h2>
+      <div class="stack-grid">
+        <div class="stack-chip">
+          <i class="devicon-python-plain colored"></i>
+          <span>Python</span>
+        </div>
+        <div class="stack-chip">
+          <i class="devicon-flask-original"></i>
+          <span>Flask</span>
+        </div>
+        <div class="stack-chip">
+          <i class="devicon-fastapi-plain colored"></i>
+          <span>FastAPI</span>
+        </div>
+        <div class="stack-chip">
+          <i class="devicon-django-plain colored"></i>
+          <span>Django</span>
+        </div>
+        <div class="stack-chip">
+          <i class="devicon-mysql-plain colored"></i>
+          <span>MySQL</span>
+        </div>
+        <div class="stack-chip">
+          <i class="devicon-mongodb-plain colored"></i>
+          <span>MongoDB</span>
+        </div>
+        <div class="stack-chip">
+          <i class="devicon-javascript-plain colored"></i>
+          <span>JavaScript</span>
+        </div>
+        <div class="stack-chip">
+          <i class="devicon-git-plain colored"></i>
+          <span>Git</span>
+        </div>
+        <div class="stack-chip">
+          <i class="devicon-pytorch-original colored"></i>
+          <span>PyTorch</span>
+        </div>
+        <div class="stack-chip">
+          <i class="devicon-postman-plain colored"></i>
+          <span>Postman</span>
+        </div>
+        <div class="stack-chip">
+         <i class="devicon-numpy-plain colored"></i>
+          <span>NumPy</span>
+          </div>
+          <div class="stack-chip">
+          <i class="devicon-pandas-plain colored"></i>
+          <span>Pandas</span>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- POSTS -->
+  <section class="posts-section" id="posts">
+    <div class="container">
+      <div class="section-head">
+        <p class="section-tag">// log</p>
+        <h2>Recent posts</h2>
+        <span class="section-line"></span>
+      </div>
+
+      <div class="post-grid">
+
+        {% if posts %}
+          {% for post in posts %}
+          <article class="post-card">
+            {% if post.image_url %}
+              <div class="post-card-media">
+                <img src="{{ post.image_url }}" alt="{{ post.title }}" class="post-card-image">
+              </div>
+            {% else %}
+              <div class="post-card-media post-card-media--empty">
+                <span class="post-card-glyph">{{ "{ }" }}</span>
+              </div>
+            {% endif %}
+            <div class="post-card-body">
+              <span class="post-date">{{ post.date }}</span>
+              <h3 class="post-title">
+                <a href="{{ url_for('post', post_slug=post.slug) }}">{{ post.title }}</a>
+              </h3>
+              <p class="post-excerpt">{{ post.excerpt }}</p>
+              <a href="{{ url_for('post', post_slug=post.slug) }}" class="post-readmore">
+                Read post <span class="arrow">→</span>
+              </a>
+            </div>
+          </article>
+          {% endfor %}
+        {% else %}
+          <article class="post-card">
+            <div class="post-card-media post-card-media--empty">
+              <span class="post-card-glyph">{{ "{ }" }}</span>
+            </div>
+            <div class="post-card-body">
+              <span class="post-date">JUN 23, 2026</span>
+              <h3 class="post-title">
+                <a href="{{ url_for('post', post_slug='why-i-started-learning-flask') }}">Why I started learning Flask</a>
+              </h3>
+              <p class="post-excerpt">A quick look at why I picked Flask as my first backend framework and what I'm hoping to build with it.</p>
+              <a href="{{ url_for('post', post_slug='why-i-started-learning-flask') }}" class="post-readmore">Read post <span class="arrow">→</span></a>
+            </div>
+          </article>
+        {% endif %}
+
+      </div>
+    </div>
+  </section>
+  <!-- ABOUT TEASER -->
+  <section class="about-teaser">
+    <div class="container about-teaser-inner">
+      <div class="about-teaser-text">
+        <p class="section-tag">// about</p>
+        <h2 class="about-teaser-heading">A bit more about me</h2>
+        <p class="about-teaser-body">
+          I graduated with a B.Tech in IT from Nagpur, and I'm currently
+          deep in the job hunt while building real projects — from a
+          P2P file-sharing system to AI text classifiers. I write about
+          the wins, the bugs, and the scams I've learned to spot along
+          the way.
+        </p>
+        <a href="{{ url_for('about') }}" class="post-readmore">
+          Read more about me <span class="arrow">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT CTA -->
+  <section class="contact-cta">
+    <div class="container contact-cta-inner">
+      <h2 class="contact-cta-heading">Got a role in mind?</h2>
+      <p class="contact-cta-sub">
+        I'm actively looking for Python/backend developer, web developer,
+        and QA/SDET roles. Always happy to talk.
+      </p>
+      <a href="{{ url_for('contact') }}" class="btn-solid btn-compact">Get in touch →</a>
+    </div>
+  </section>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const counters = document.querySelectorAll(".stat-number");
+  const speed = 60;
+
+  const animate = (el) => {
+    const target = parseInt(el.getAttribute("data-count"), 10);
+    let current = 0;
+    const step = Math.max(target / speed, 1);
+    const tick = () => {
+      current += step;
+      if (current >= target) {
+        el.textContent = target;
+      } else {
+        el.textContent = Math.floor(current);
+        requestAnimationFrame(tick);
+      }
+    };
+    tick();
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        animate(entry.target);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.4 });
+
+  counters.forEach((c) => observer.observe(c));
+});
+</script>
+{% endblock %}

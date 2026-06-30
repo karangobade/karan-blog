@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ post.title if post else "Post" }} — Karan Blog{% endblock %}
+
+{% block content %}
+
+  <section class="page-section">
+    <div class="container narrow">
+
+      <a href="{{ url_for('home') }}" class="back-link">&larr; Back to all posts</a>
+
+      {% if post %}
+        {% if post.image_url %}
+          <img src="{{ post.image_url }}" alt="{{ post.title }}" class="post-hero-image">
+        {% endif %}
+        <span class="post-date">{{ post.date.strftime('%b %d, %Y') }}</span>
+        <h1 class="page-title">{{ post.title }}</h1>
+        <div class="post-body">
+          {{ post.content | safe }}
+        </div>
+      {% else %}
+        <span class="post-date">JUN 23, 2026</span>
+        <h1 class="page-title">Post not found</h1>
+        <div class="post-body">
+          <p>
+            This post doesn't exist yet, or the slug in the URL doesn't match
+            any post in the database.
+          </p>
+          <p>
+            Example route in <code>app.py</code>:
+          </p>
+          <pre><code>@app.route("/post/&lt;string:post_slug&gt;")
+def post(post_slug):
+    found = Post.query.filter_by(slug=post_slug).first()
+    return render_template("post.html", post=found)</code></pre>
+        </div>
+      {% endif %}
+
+    </div>
+  </section>
+
+{% endblock %}

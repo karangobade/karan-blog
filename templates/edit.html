@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ "Edit Post" if post else "New Post" }} — Karan Blog{% endblock %}
+
+{% block content %}
+
+  <section class="page-section">
+    <div class="container narrow">
+
+      <div class="section-head">
+        <h2>{{ "Edit Post" if post else "New Post" }}</h2>
+        <span class="section-line"></span>
+      </div>
+
+<form method="POST" action="{{ url_for('edit', sno=sno) }}" class="post-form" enctype="multipart/form-data">
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title" required
+               value="{{ post.title if post else '' }}">
+
+        <label for="slug">Slug</label>
+        <input type="text" id="slug" name="slug" required
+               value="{{ post.slug if post else '' }}">
+
+        <label for="date">Date</label>
+        <input type="date" id="date" name="date"
+       value="{{ post.date.strftime('%Y-%m-%d') if post else '' }}">
+       <label for="excerpt">Excerpt</label>
+       <input type="text" id="excerpt" name="excerpt" 
+       value="{{ post.excerpt if post else '' }}">
+
+<label for="image">Featured Image</label>
+{% if post and post.image_url %}
+  <img src="{{ post.image_url }}" alt="Current image" style="max-width: 200px; display: block; margin-bottom: 0.5rem; border-radius: 6px;">
+{% endif %}
+<input type="file" id="image" name="image" accept="image/*">
+
+        <label for="content">Content (HTML)</label>
+        <textarea id="content" name="content" rows="14" required>{{ post.content if post else '' }}</textarea>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-solid">
+            {{ "Save Changes" if post else "Publish Post" }}
+          </button>
+          <a href="{{ url_for('dashboard') }}" class="btn-action">Cancel</a>
+        </div>
+
+      </form>
+
+    </div>
+  </section>
+
+{% endblock %}

@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+
+{% block title %}Contact — Karan Blog{% endblock %}
+
+{% block content %}
+
+  <section class="page-section">
+    <div class="container narrow">
+      <p class="hero-eyebrow">// get in touch</p>
+      <h1 class="page-title">Contact me</h1>
+      <p class="page-sub">Got feedback, a question, or just want to say hi? Drop a message below.</p>
+
+      <form class="contact-form" method="POST" action="{{ url_for('contact') }}">
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" placeholder="Your name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" placeholder="you@example.com" required>
+        </div>
+
+        <div class="form-group">
+          <label for="message">Message</label>
+          <textarea id="message" name="msg" rows="6" placeholder="Write your message..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn-solid btn-lg">Send message</button>
+      </form>
+    </div>
+  </section>
+
+{% endblock %}

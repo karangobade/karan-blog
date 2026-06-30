@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block title %}Login — Karan Blog{% endblock %}
+
+{% block content %}
+
+  <section class="auth-section">
+    <div class="auth-card">
+      <p class="hero-eyebrow">// welcome back</p>
+      <h1 class="page-title">Login</h1>
+
+      <form class="auth-form" method="POST" action="{{ url_for('login') }}">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="name" placeholder="Your username" required>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="passa" placeholder="Your password" required>
+        </div>
+
+        <button type="submit" class="btn-solid btn-lg btn-full">Login</button>
+      </form>
+
+    </div>
+  </section>
+
+{% endblock %}

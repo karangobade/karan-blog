@@ -1,0 +1,81 @@
+{% extends "layout.html" %}
+
+{% block title %}Dashboard — Karan Blog{% endblock %}
+
+{% block content %}
+  <section class="page-section dashboard-page">
+    <div class="container">
+
+      <!-- WELCOME -->
+      <div class="dashboard-welcome">
+        <p class="section-tag">// admin</p>
+        <h2 class="dashboard-welcome-heading">Welcome back, Karan 👋</h2>
+        <p class="dashboard-welcome-sub">
+          Here's what's happening with your blog right now.
+        </p>
+      </div>
+  <section class="page-section dashboard-page">
+    <div class="container">
+
+      <div class="section-head">
+        <p class="section-tag">// admin</p>
+        <h2>Dashboard</h2>
+        <span class="section-line"></span>
+      </div>
+
+      <div class="dashboard-toolbar">
+        <p class="dashboard-summary">
+          <span class="dashboard-count">{{ posts|length }}</span>
+          post{{ 's' if posts|length != 1 else '' }} published
+        </p>
+        <a href="{{ url_for('edit', sno=0) }}" class="btn-solid btn-compact">+ New Post</a>
+      </div>
+
+      {% if posts %}
+        <div class="dashboard-list">
+          {% for post in posts %}
+          <div class="dashboard-row">
+
+            <div class="dashboard-row-media">
+              {% if post.image_url %}
+                <img src="{{ post.image_url }}" alt="{{ post.title }}">
+              {% else %}
+                <span class="dashboard-row-glyph">{{ "{ }" }}</span>
+              {% endif %}
+            </div>
+
+            <div class="dashboard-row-info">
+              <h3 class="dashboard-row-title">
+                <a href="{{ url_for('post', post_slug=post.slug) }}" target="_blank">{{ post.title }}</a>
+              </h3>
+              <p class="dashboard-row-excerpt">{{ post.excerpt or "No excerpt yet." }}</p>
+              <div class="dashboard-row-meta">
+                <span class="dashboard-row-date">{{ post.date.strftime('%b %d, %Y') if post.date else '' }}</span>
+                <span class="dashboard-row-dot">•</span>
+                <code class="dashboard-row-slug">{{ post.slug }}</code>
+              </div>
+            </div>
+
+            <div class="dashboard-row-actions">
+              <a href="{{ url_for('edit', sno=post.sno) }}" class="btn-action btn-edit">Edit</a>
+              <form action="{{ url_for('delete', sno=post.sno) }}" method="POST" class="inline-form"
+                    onsubmit="return confirm('Delete this post? This cannot be undone.');">
+                <button type="submit" class="btn-action btn-delete">Delete</button>
+              </form>
+            </div>
+
+          </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="dashboard-empty">
+          <span class="dashboard-row-glyph">{{ "{ }" }}</span>
+          <p>No posts yet.</p>
+          <a href="{{ url_for('edit', sno=0) }}" class="post-readmore">Write your first one <span class="arrow">→</span></a>
+        </div>
+      {% endif %}
+
+    </div>
+  </section>
+
+{% endblock %}

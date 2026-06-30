@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block title %}All Posts — Karan Blog{% endblock %}
+
+{% block content %}
+
+  <section class="posts-section" id="posts">
+    <div class="container">
+      <div class="section-head">
+        <h2>All posts</h2>
+        <span class="section-line"></span>
+      </div>
+
+      <div class="post-grid">
+
+        {% if posts %}
+          {% for post in posts %}
+          <article class="post-card">
+            {% if post.image_url %}
+              <img src="{{ post.image_url }}" alt="{{ post.title }}" class="post-card-image">
+            {% endif %}
+            <span class="post-date">{{ post.date.strftime('%b %d, %Y') }}</span>
+            <h3 class="post-title">
+              <a href="{{ url_for('post', post_slug=post.slug) }}">{{ post.title }}</a>
+            </h3>
+            <p class="post-excerpt">{{ post.excerpt }}</p>
+            <a href="{{ url_for('post', post_slug=post.slug) }}" class="post-readmore">Read post &rarr;</a>
+          </article>
+          {% endfor %}
+        {% else %}
+          <p>No posts yet. Check back soon!</p>
+        {% endif %}
+
+      </div>
+    </div>
+  </section>
+
+{% endblock %}
