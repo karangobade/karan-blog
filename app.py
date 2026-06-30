@@ -7,7 +7,9 @@ from datetime import datetime
 
 import os
 from dotenv import load_dotenv
+import resend
 
+resend.api_key = os.getenv("RESEND_API_KEY")
 load_dotenv()
 
 app = Flask(__name__)
@@ -77,17 +79,25 @@ def contact():
         name = request.form.get("name")
         email = request.form.get("email")
         msg = request.form.get("msg")
-        new_c=Contact(name=name,email=email,msg=msg)
+
+        new_c = Contact(name=name, email=email, msg=msg)
         db.session.add(new_c)
         db.session.commit()
+
         flash("Thanks for reaching out! I'll get back to you soon.", "success")
-        mail.send_message(f"New message from {name}",
-                              sender=email,
-                              recipients=[os.getenv("EMAIL_USER")],
-                              body=msg + "\n\nSent by: " + name + "\nEmail: " + email + "\msg: "+msg
-                              )
+
+        try:
+            resend.Emails.send({
+                "from": "Karan Blog <onboarding@resend.dev>",
+                "to": [os.getenv("EMAIL_USER")],
+                "subject": f"New message from {name}",
+                "text": f"{msg}\n\nSent by: {name}\nEmail: {email}"
+            })
+        except Exception as e:
+            print("Email sending failed:", e)
+
         return redirect(url_for("contact"))
-    
+
     return render_template("contact.html")
 
 @app.route("/post")
