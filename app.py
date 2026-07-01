@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash,Response
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail
 import cloudinary
@@ -208,6 +208,35 @@ def logout():
     session.pop("user", None)
     flash("Logged out.", "info")
     return redirect(url_for("home"))
+
+@app.route("/robots.txt")
+def robots():
+    content = """User-agent: *
+Allow: /
+
+Sitemap: https://karan-blog-43wl.onrender.com/sitemap.xml
+"""
+    return Response(content, mimetype='text/plain')
+
+@app.route("/sitemap.xml")
+def sitemap():
+    posts = Post.query.all()
+    pages = [
+        "https://karan-blog-43wl.onrender.com/",
+        "https://karan-blog-43wl.onrender.com/about",
+        "https://karan-blog-43wl.onrender.com/contact",
+        "https://karan-blog-43wl.onrender.com/post",
+    ]
+    for post in posts:
+        pages.append(f"https://karan-blog-43wl.onrender.com/post/{post.slug}")
+
+    xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
+    xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+    for page in pages:
+        xml += f'  <url><loc>{page}</loc></url>\n'
+    xml += '</urlset>'
+
+    return Response(xml, mimetype='application/xml')
 
 if __name__ == "__main__":
     with app.app_context():
